@@ -22,4 +22,4 @@ RUN rm -rf node_modules \
   && npm i pm2 -g \
   && npm run build
 EXPOSE 3000
-CMD npm run start
+CMD npm run start:docker
