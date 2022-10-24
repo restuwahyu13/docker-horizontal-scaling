@@ -8,7 +8,7 @@ dc-up:
 	${COMPOSE} --compatibility up -d --remove-orphans --build
 
 dc-up-ndp:
-	${COMPOSE} --compatibility up -d --remove-orphans --no-deeps
+	${COMPOSE} --compatibility up -d --remove-orphans --no-deps
 
 dc-down:
 	${COMPOSE} down
