@@ -83,6 +83,7 @@ class App {
 
   private route(): void {
     this.app.use(`${this.version}/todos`, Container.resolve<Router>('TodosModule'))
+    this.app.use(`${this.version}/users`, Container.resolve<Router>('UsersModule'))
   }
 
   private globalRoute(): void {

@@ -8,6 +8,7 @@ export const Injectable = autoInjectable
 export const Service = autoInjectable
 export const Controller = autoInjectable
 export const Route = autoInjectable
+export const Middleware = autoInjectable
 export const Inject = inject
 export const InjectAll = injectAll
 export const InjectTransform = injectWithTransform

@@ -1,24 +1,30 @@
 import { validate, ValidationError } from 'class-validator'
 import { ClassConstructor, plainToClass } from 'class-transformer'
 import { StatusCodes as status } from 'http-status-codes'
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, Handler } from 'express'
 import { OutgoingMessage } from 'http'
 
 import { apiResponse } from '@helpers/helper.apiResponse'
+import { Middleware } from '@helpers/helper.di'
 
-export function validator(MetaType: ClassConstructor<any>) {
-  return async function (req: Request, res: Response, next: NextFunction): Promise<OutgoingMessage> {
-    let property: Record<string, any> = {}
+@Middleware()
+export class ValidatorMiddleware {
+  constructor() {}
 
-    Object.assign(property, req.body, req.params, req.query)
+  use(MetaType: ClassConstructor<any>): Handler {
+    return async function (req: Request, res: Response, next: NextFunction): Promise<OutgoingMessage> {
+      let property: Record<string, any> = {}
 
-    const object: Record<string, any> = plainToClass(MetaType, property)
-    const errorsResponse: ValidationError[] = await validate(object)
+      Object.assign(property, req.body, req.params, req.query)
 
-    const errorMessage = errorsResponse.map((val: ValidationError) => apiResponse(status.BAD_REQUEST, Object.values(val.constraints)[0]))
-    if (errorMessage.length) {
-      return res.status(status.BAD_REQUEST).json({ errors: errorMessage })
+      const object: Record<string, any> = plainToClass(MetaType, property)
+      const errorsResponse: ValidationError[] = await validate(object)
+
+      const errorMessage = errorsResponse.map((val: ValidationError) => apiResponse(status.BAD_REQUEST, Object.values(val.constraints)[0]))
+      if (errorMessage.length) {
+        return res.status(status.BAD_REQUEST).json({ errors: errorMessage })
+      }
+      next()
     }
-    next()
   }
 }
