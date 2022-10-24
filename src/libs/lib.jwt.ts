@@ -38,7 +38,7 @@ interface Ioptions {
 export class JWT {
   static signToken(data: Record<string, any>, options: Ioptions): IToken | Error {
     try {
-      const aesTokenPayload: string = moment(expiredAt(1, 'days')).local(true).format('YYYY-MM-DD HH:mm:ss')
+      const aesTokenPayload: string = moment(expiredAt(1, 'days')).local(true).format()
 
       const accessToken: string = jwt.sign({ ...data }, secretKey, { expiresIn: `${options.expiredAt}${typeTime[options.type]}`, audience: 'node-app' })
       const refreshToken: string = jwt.sign({ ...data }, secretKey, { expiresIn: '30d', audience: 'node-app' })
