@@ -27,7 +27,7 @@ export class TransformMiddleware {
         if (validJwt?.length !== 3) throw apiResponse(status.UNAUTHORIZED, 'Access Token format must be jwt')
 
         // overwrite authorization headers
-        req.headers.authorization = `Bearer ${String(decrypt(accessToken, 20))}`
+        req.headers.authorization = `Bearer ${decrypt(accessToken, 20)}`
 
         next()
       } catch (e: any) {
